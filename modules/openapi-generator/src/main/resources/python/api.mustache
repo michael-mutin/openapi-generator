@@ -109,11 +109,17 @@ class {{classname}}:
         # process the path parameters
 {{#pathParams}}
         if {{paramName}} is not None:
+            {{#isDeprecated}}
+            warnings.warn("{{{httpMethod}}} {{{path}}} received a deprecated parameter: {{paramName}}", DeprecationWarning, stacklevel=2)
+            {{/isDeprecated}}
             _path_params['{{baseName}}'] = {{paramName}}{{#isEnumRef}}.value{{/isEnumRef}}
 {{/pathParams}}
         # process the query parameters
 {{#queryParams}}
         if {{paramName}} is not None:
+            {{#isDeprecated}}
+            warnings.warn("{{{httpMethod}}} {{{path}}} received a deprecated parameter: {{paramName}}", DeprecationWarning, stacklevel=2)
+            {{/isDeprecated}}
             {{#isDateTime}}
             if isinstance({{paramName}}, datetime):
                 _query_params.append(
@@ -147,6 +153,9 @@ class {{classname}}:
         # process the header parameters
 {{#headerParams}}
         if {{paramName}} is not None:
+            {{#isDeprecated}}
+            warnings.warn("{{{httpMethod}}} {{{path}}} received a deprecated parameter: {{paramName}}", DeprecationWarning, stacklevel=2)
+            {{/isDeprecated}}
             _header_params['{{baseName}}'] = {{paramName}}
 {{/headerParams}}
         # process the form parameters
