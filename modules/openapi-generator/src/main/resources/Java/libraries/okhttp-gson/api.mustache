@@ -47,12 +47,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 {{#supportStreaming}}
 import java.io.InputStream;
 {{/supportStreaming}}
 
 {{#operations}}
 public class {{classname}} {
+    private static final Logger LOGGER = Logger.getLogger({{classname}}.class.getName());
     private ApiClient localVarApiClient;
     private int localHostIndex;
     private String localCustomBaseUrl;
@@ -92,7 +95,7 @@ public class {{classname}} {
     {{#operation}}
     {{^vendorExtensions.x-group-parameters}}/**
      * Build call for {{operationId}}{{#allParams}}
-     * @param {{paramName}} {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}){{/required}}{{/allParams}}
+     * @param {{paramName}} {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}){{/required}}{{#isDeprecated}} (deprecated){{/isDeprecated}}{{/allParams}}
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -167,9 +170,17 @@ public class {{classname}} {
 
         {{/formParams}}
         {{^dynamicOperations}}
+        {{#pathParams}}
+        {{#isDeprecated}}
+        LOGGER.log(Level.WARNING, "{{{httpMethod}}} {{{path}}} received a deprecated parameter: {{paramName}}");
+        {{/isDeprecated}}
+        {{/pathParams}}
         {{#queryParams}}
         if ({{paramName}} != null) {
             {{#isFreeFormObject}}localVarQueryParams.addAll(localVarApiClient.freeFormParameterToPairs({{paramName}}));{{/isFreeFormObject}}{{^isFreeFormObject}}{{#collectionFormat}}localVarCollectionQueryParams.addAll(localVarApiClient.parameterToPairs("{{{.}}}", {{/collectionFormat}}{{^collectionFormat}}localVarQueryParams.addAll(localVarApiClient.parameterToPair({{/collectionFormat}}"{{baseName}}", {{paramName}}));{{/isFreeFormObject}}
+            {{#isDeprecated}}
+            LOGGER.log(Level.WARNING, "{{{httpMethod}}} {{{path}}} received a deprecated parameter: {{paramName}}");
+            {{/isDeprecated}}
         }
 
         {{/queryParams}}
@@ -183,6 +194,9 @@ public class {{classname}} {
         {{#headerParams}}
         if ({{paramName}} != null) {
             localVarHeaderParams.put("{{baseName}}", localVarApiClient.parameterToString({{paramName}}));
+            {{#isDeprecated}}
+            LOGGER.log(Level.WARNING, "{{{httpMethod}}} {{{path}}} received a deprecated parameter: {{paramName}}");
+            {{/isDeprecated}}
         }
 
         {{/headerParams}}
@@ -196,6 +210,9 @@ public class {{classname}} {
         {{#cookieParams}}
         if ({{paramName}} != null) {
             localVarCookieParams.put("{{baseName}}", localVarApiClient.parameterToString({{paramName}}));
+            {{#isDeprecated}}
+            LOGGER.log(Level.WARNING, "{{{httpMethod}}} {{{path}}} received a deprecated parameter: {{paramName}}");
+            {{/isDeprecated}}
         }
 
         {{/cookieParams}}
@@ -282,7 +299,7 @@ public class {{classname}} {
     /**
      * {{summary}}
      * {{notes}}{{#allParams}}
-     * @param {{paramName}} {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}){{/required}}{{/allParams}}{{#returnType}}
+     * @param {{paramName}} {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}){{/required}}{{#isDeprecated}} (deprecated){{/isDeprecated}}{{/allParams}}{{#returnType}}
      * @return {{.}}{{/returnType}}
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      {{#responses.0}}
@@ -322,7 +339,7 @@ public class {{classname}} {
     {{^vendorExtensions.x-group-parameters}}/**
      * {{summary}}
      * {{notes}}{{#allParams}}
-     * @param {{paramName}} {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}){{/required}}{{/allParams}}
+     * @param {{paramName}} {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}){{/required}}{{#isDeprecated}} (deprecated){{/isDeprecated}}{{/allParams}}
      * @return ApiResponse&lt;{{returnType}}{{^returnType}}Void{{/returnType}}&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      {{#responses.0}}
@@ -389,7 +406,7 @@ public class {{classname}} {
     {{^vendorExtensions.x-group-parameters}}/**
      * {{summary}} (asynchronously)
      * {{notes}}{{#allParams}}
-     * @param {{paramName}} {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}){{/required}}{{/allParams}}
+     * @param {{paramName}} {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}){{/required}}{{#isDeprecated}} (deprecated){{/isDeprecated}}{{/allParams}}
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
