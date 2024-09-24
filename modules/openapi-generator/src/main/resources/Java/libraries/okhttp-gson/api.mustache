@@ -106,7 +106,7 @@ public class {{classname}} {
      </table>
      {{/responses.0}}
      {{#isDeprecated}}
-     * @deprecated
+     * @deprecated {{#vendorExtensions.x-alternative-operation-id}}Use {@link #{{vendorExtensions.x-alternative-operation-id}}Call} instead{{/vendorExtensions.x-alternative-operation-id}}
      {{/isDeprecated}}
         {{#externalDocs}}
      * {{description}}
@@ -295,7 +295,7 @@ public class {{classname}} {
      </table>
      {{/responses.0}}
      {{#isDeprecated}}
-     * @deprecated
+     * @deprecated {{#vendorExtensions.x-alternative-operation-id}}Use {@link #{{vendorExtensions.x-alternative-operation-id}}} instead{{/vendorExtensions.x-alternative-operation-id}}
      {{/isDeprecated}}
         {{#externalDocs}}
      * {{description}}
@@ -335,7 +335,7 @@ public class {{classname}} {
      </table>
      {{/responses.0}}
      {{#isDeprecated}}
-     * @deprecated
+     * @deprecated {{#vendorExtensions.x-alternative-operation-id}}Use {@link #{{vendorExtensions.x-alternative-operation-id}}WithHttpInfo} instead{{/vendorExtensions.x-alternative-operation-id}}
      {{/isDeprecated}}
         {{#externalDocs}}
      * {{description}}
@@ -403,7 +403,7 @@ public class {{classname}} {
      </table>
      {{/responses.0}}
      {{#isDeprecated}}
-     * @deprecated
+     * @deprecated {{#vendorExtensions.x-alternative-operation-id}}Use {@link #{{vendorExtensions.x-alternative-operation-id}}Async} instead{{/vendorExtensions.x-alternative-operation-id}}
      {{/isDeprecated}}
         {{#externalDocs}}
      * {{description}}
