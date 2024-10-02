@@ -48,7 +48,7 @@ public class {{classname}} {
     * {{.}}{{/summary}}{{#notes}}
     * {{.}}{{/notes}}{{#responses}}
     * <p><b>{{code}}</b>{{#message}} - {{.}}{{/message}}{{/responses}}{{#allParams}}
-    * @param {{paramName}} {{description}}{{^description}}The {{paramName}} parameter{{/description}}{{/allParams}}{{#returnType}}
+    * @param {{paramName}} {{description}}{{^description}}The {{paramName}} parameter{{/description}}{{#isDeprecated}} (deprecated){{/isDeprecated}}{{/allParams}}{{#returnType}}
     * @return {{.}}{{/returnType}}
     * @throws IOException if an error occurs while attempting to invoke the API{{#externalDocs}}
     * {{description}}
@@ -71,7 +71,7 @@ public class {{classname}} {
     * {{.}}{{/summary}}{{#notes}}
     * {{.}}{{/notes}}{{#responses}}
     * <p><b>{{code}}</b>{{#message}} - {{.}}{{/message}}{{/responses}}{{#requiredParams}}
-    * @param {{paramName}} {{description}}{{^description}}The {{paramName}} parameter{{/description}}{{/requiredParams}}
+    * @param {{paramName}} {{description}}{{^description}}The {{paramName}} parameter{{/description}}{{#isDeprecated}} (deprecated){{/isDeprecated}}{{/requiredParams}}
     * @param params Map of query params. A collection will be interpreted as passing in multiple instances of the same query param.{{#returnType}}
     * @return {{.}}{{/returnType}}
     * @throws IOException if an error occurs while attempting to invoke the API{{#externalDocs}}

@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 {{#useBeanValidation}}
 import {{javaxPackage}}.validation.constraints.*;
@@ -32,6 +34,7 @@ import org.springframework.http.ResponseEntity;
 {{>generatedAnnotation}}
 {{#operations}}
 public class {{classname}} {
+    private static final Logger LOGGER = Logger.getLogger({{classname}}.class.getName());
     private ApiClient apiClient;
 
     public {{classname}}() {
@@ -129,7 +132,7 @@ public class {{classname}} {
      * {{summary}}
      * {{notes}}
 {{#responses}}     * <p><b>{{code}}</b>{{#message}} - {{.}}{{/message}}
-{{/responses}}{{#allParams}}     * @param {{paramName}} {{description}}{{^description}}The {{paramName}} parameter{{/description}}
+{{/responses}}{{#allParams}}     * @param {{paramName}} {{description}}{{^description}}The {{paramName}} parameter{{/description}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
 {{/allParams}}{{#returnType}}     * @return {{.}}
 {{/returnType}}     * @throws RestClientResponseException if an error occurs while attempting to invoke the API
 {{#externalDocs}}
@@ -159,6 +162,9 @@ public class {{classname}} {
 
         {{#pathParams}}
         pathParams.put("{{baseName}}", {{#collectionFormat}}apiClient.collectionPathParameterToString(ApiClient.CollectionFormat.valueOf("csv".toUpperCase()), {{/collectionFormat}}{{{paramName}}}{{#collectionFormat}}){{/collectionFormat}});
+        {{#isDeprecated}}
+        LOGGER.log(Level.WARNING, "{{{httpMethod}}} {{{path}}} received a deprecated parameter: {{paramName}}");
+        {{/isDeprecated}}
         {{/pathParams}}
         {{/hasPathParams}}
 
@@ -174,8 +180,13 @@ public class {{classname}} {
         {{/isExplode}}{{/queryParams}}{{/hasQueryParams}}{{#hasHeaderParams}}
 
         {{#headerParams}}
-        if ({{paramName}} != null)
-        headerParams.add("{{baseName}}", apiClient.parameterToString({{paramName}}));{{^-last}}
+        if ({{paramName}} != null) {
+            headerParams.add("{{baseName}}", apiClient.parameterToString({{paramName}}));{{^-last}}
+            {{#isDeprecated}}
+            LOGGER.log(Level.WARNING, "{{{httpMethod}}} {{{path}}} received a deprecated parameter: {{paramName}}");
+            {{/isDeprecated}}
+        }
+        
         {{/-last}}
         {{/headerParams}}
         {{/hasHeaderParams}}
@@ -183,6 +194,11 @@ public class {{classname}} {
 
         {{#cookieParams}}
         cookieParams.putAll(apiClient.parameterToMultiValueMap({{#collectionFormat}}ApiClient.CollectionFormat.valueOf("{{{.}}}".toUpperCase(Locale.ROOT)){{/collectionFormat}}{{^collectionFormat}}null{{/collectionFormat}}, "{{baseName}}", {{paramName}}));
+        if ({{paramName}} != null) {
+            {{#isDeprecated}}
+            LOGGER.log(Level.WARNING, "{{{httpMethod}}} {{{path}}} received a deprecated parameter: {{paramName}}");
+            {{/isDeprecated}}
+        }
         {{/cookieParams}}
         {{/hasCookieParams}}
         {{#hasFormParams}}
@@ -212,7 +228,7 @@ public class {{classname}} {
      * {{summary}}
      * {{notes}}
 {{#responses}}     * <p><b>{{code}}</b>{{#message}} - {{.}}{{/message}}
-{{/responses}}{{#allParams}}     * @param {{paramName}} {{description}}{{^description}}The {{paramName}} parameter{{/description}}
+{{/responses}}{{#allParams}}     * @param {{paramName}} {{description}}{{^description}}The {{paramName}} parameter{{/description}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
 {{/allParams}}{{#returnType}}     * @return {{.}}
 {{/returnType}}     * @throws RestClientResponseException if an error occurs while attempting to invoke the API
 {{#externalDocs}}
@@ -229,7 +245,7 @@ public class {{classname}} {
      * {{summary}}
      * {{notes}}
 {{#responses}}     * <p><b>{{code}}</b>{{#message}} - {{.}}{{/message}}
-{{/responses}}{{#allParams}}     * @param {{paramName}} {{description}}{{^description}}The {{paramName}} parameter{{/description}}
+{{/responses}}{{#allParams}}     * @param {{paramName}} {{description}}{{^description}}The {{paramName}} parameter{{/description}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
 {{/allParams}}{{#returnType}}     * @return ResponseEntity&lt;{{.}}&gt;
 {{/returnType}}     * @throws RestClientResponseException if an error occurs while attempting to invoke the API
 {{#externalDocs}}
@@ -246,7 +262,7 @@ public class {{classname}} {
      * {{summary}}
      * {{notes}}
 {{#responses}}     * <p><b>{{code}}</b>{{#message}} - {{.}}{{/message}}
-{{/responses}}{{#allParams}}     * @param {{paramName}} {{description}}{{^description}}The {{paramName}} parameter{{/description}}
+{{/responses}}{{#allParams}}     * @param {{paramName}} {{description}}{{^description}}The {{paramName}} parameter{{/description}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
 {{/allParams}}
      * @return ResponseSpec
      * @throws RestClientResponseException if an error occurs while attempting to invoke the API
