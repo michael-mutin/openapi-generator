@@ -30,7 +30,7 @@
         :return: Returns the result object.
         """ # noqa: E501
         {{#isDeprecated}}
-        warnings.warn("{{{httpMethod}}} {{{path}}} is deprecated.", DeprecationWarning)
+        warnings.warn("{{{httpMethod}}} {{{path}}} is deprecated.{{#vendorExtensions.x-alternative-operation-id}} Use {{{vendorExtensions.x-alternative-operation-httpmethod}}} {{{vendorExtensions.x-alternative-operation-path}}} instead.{{/vendorExtensions.x-alternative-operation-id}}", DeprecationWarning)
         {{/isDeprecated}}
 
         _param = self._{{operationId}}_serialize(

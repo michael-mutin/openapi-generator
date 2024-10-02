@@ -4521,7 +4521,11 @@ public class DefaultCodegen implements CodegenConfig {
                         altOpId = removeNonNameElementToCamelCase(altOpId);
                         altOpId = toOperationId(altOpId);
                         final String altOpIdFieldName = "x-alternative-operation-id";
+                        final String altOpPathFieldName = "x-alternative-operation-path";
+                        final String altOpHttpMethodFieldName = "x-alternative-operation-httpmethod";
                         op.vendorExtensions.put(altOpIdFieldName, altOpId);
+                        op.vendorExtensions.put(altOpPathFieldName, altOpPathname);
+                        op.vendorExtensions.put(altOpHttpMethodFieldName, altOpHttpMethod.toUpperCase(Locale.ROOT));
                     }
                 }
             }
