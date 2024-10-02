@@ -5,7 +5,7 @@
         {{/notes}}
 
         {{#allParams}}
-        :param {{paramName}}:{{#description}} {{{.}}}{{/description}}{{#required}} (required){{/required}}{{#optional}}(optional){{/optional}}
+        :param {{paramName}}:{{#description}} {{{.}}}{{/description}}{{#required}} (required){{/required}}{{#optional}} (optional){{/optional}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
         :type {{paramName}}: {{dataType}}{{#optional}}, optional{{/optional}}
         {{/allParams}}
         :param _request_timeout: timeout setting for this request. If one
