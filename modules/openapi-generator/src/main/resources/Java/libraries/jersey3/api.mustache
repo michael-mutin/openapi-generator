@@ -75,7 +75,7 @@ public class {{classname}} {
      </table>
    {{/responses.0}}
    {{#isDeprecated}}
-   * @deprecated
+   * @deprecated {{#vendorExtensions.x-alternative-operation-id}}Use {@link #{{vendorExtensions.x-alternative-operation-id}}} instead{{/vendorExtensions.x-alternative-operation-id}}
    {{/isDeprecated}}
    {{#externalDocs}}
    * {{description}}
@@ -109,7 +109,7 @@ public class {{classname}} {
      </table>
    {{/responses.0}}
    {{#isDeprecated}}
-   * @deprecated
+   * @deprecated {{#vendorExtensions.x-alternative-operation-id}}Use {@link #{{vendorExtensions.x-alternative-operation-id}}WithHttpInfo} instead{{/vendorExtensions.x-alternative-operation-id}}
    {{/isDeprecated}}
    {{#externalDocs}}
    * {{description}}
@@ -276,7 +276,7 @@ public class {{classname}} {
    * @param {{paramName}} {{description}} (required){{/pathParams}}
    * @return {{operationId}}Request
    * @throws ApiException if fails to make API call
-   {{#isDeprecated}}* @deprecated{{/isDeprecated}}
+   {{#isDeprecated}}* @deprecated {{#vendorExtensions.x-alternative-operation-id}}Use {@link #{{vendorExtensions.x-alternative-operation-id}}} instead{{/vendorExtensions.x-alternative-operation-id}}{{/isDeprecated}}
    {{#externalDocs}}* {{description}}
    * @see <a href="{{url}}">{{summary}} Documentation</a>{{/externalDocs}}
    */

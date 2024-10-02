@@ -69,7 +69,7 @@ public class {{classname}} extends BaseApi {
      * @see <a href="{{url}}">{{summary}} Documentation</a>
      {{/externalDocs}}
      {{#isDeprecated}}
-     * @deprecated
+     * @deprecated {{#vendorExtensions.x-alternative-operation-id}}Use {@link #{{vendorExtensions.x-alternative-operation-id}}} instead{{/vendorExtensions.x-alternative-operation-id}}
      {{/isDeprecated}}
      */
     {{#isDeprecated}}
@@ -100,7 +100,7 @@ public class {{classname}} extends BaseApi {
      * @see <a href="{{url}}">{{summary}} Documentation</a>
      {{/externalDocs}}
      {{#isDeprecated}}
-     * @deprecated
+     * @deprecated {{#vendorExtensions.x-alternative-operation-id}}Use {@link #{{vendorExtensions.x-alternative-operation-id}}WithHttpInfo} instead{{/vendorExtensions.x-alternative-operation-id}}
      {{/isDeprecated}}
      */
     {{#isDeprecated}}

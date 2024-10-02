@@ -41,7 +41,7 @@ public interface {{classname}} {
 {{/allParams}}
    * @return Call&lt;{{returnType}}{{^returnType}}Void{{/returnType}}&gt;
 {{#isDeprecated}}
-   * @deprecated
+   * @deprecated {{#vendorExtensions.x-alternative-operation-id}}Use {@link #{{vendorExtensions.x-alternative-operation-id}}} instead{{/vendorExtensions.x-alternative-operation-id}}
 {{/isDeprecated}}
    */
   {{#isDeprecated}}
