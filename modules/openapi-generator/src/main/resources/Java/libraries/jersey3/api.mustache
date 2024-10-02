@@ -21,10 +21,13 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 {{>generatedAnnotation}}
 {{#operations}}
 public class {{classname}} {
+  private static final Logger LOGGER = Logger.getLogger({{classname}}.class.getName());
   private ApiClient apiClient;
 
   public {{classname}}() {
@@ -59,7 +62,7 @@ public class {{classname}} {
    * {{summary}}
    * {{notes}}
    {{#allParams}}
-   * @param {{paramName}} {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{#defaultValue}}, default to {{.}}{{/defaultValue}}){{/required}}
+   * @param {{paramName}} {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{#defaultValue}}, default to {{.}}{{/defaultValue}}){{/required}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
    {{/allParams}}
    {{#returnType}}
    * @return {{.}}
@@ -95,7 +98,7 @@ public class {{classname}} {
    * {{summary}}
    * {{notes}}
    {{#allParams}}
-   * @param {{paramName}} {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{#defaultValue}}, default to {{.}}{{/defaultValue}}){{/required}}
+   * @param {{paramName}} {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{#defaultValue}}, default to {{.}}{{/defaultValue}}){{/required}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
    {{/allParams}}
    * @return ApiResponse&lt;{{returnType}}{{^returnType}}Void{{/returnType}}&gt;
    * @throws ApiException if fails to make API call
@@ -137,6 +140,12 @@ public class {{classname}} {
             .replaceAll({{=% %=}}"\\{%baseName%}"%={{ }}=%, apiClient.escapeString({{{paramName}}}.toString())){{/pathParams}};
 
     {{/hasPathParams}}
+    {{#pathParams}}
+    {{#isDeprecated}}
+    LOGGER.log(Level.WARNING, "{{{httpMethod}}} {{{path}}} received a deprecated parameter: {{paramName}}");
+    {{/isDeprecated}}
+    {{/pathParams}}
+
     {{#queryParams}}
     {{#-first}}
     // Query parameters
@@ -150,15 +159,23 @@ public class {{classname}} {
     {{#-last}}
 
     {{/-last}}
+    {{#isDeprecated}}
+    if ({{paramName}} != null) {
+      LOGGER.log(Level.WARNING, "{{{httpMethod}}} {{{path}}} received a deprecated parameter: {{paramName}}");
+    }
+    {{/isDeprecated}}
     {{/queryParams}}
     {{#headerParams}}
     {{#-first}}
     // Header parameters
     Map<String, String> localVarHeaderParams = new LinkedHashMap<>();
     {{/-first}}
-    {{^required}}if ({{paramName}} != null) {
-      {{/required}}localVarHeaderParams.put("{{baseName}}", apiClient.parameterToString({{paramName}}));{{^required}}
-    }{{/required}}
+    if ({{paramName}} != null) {
+      localVarHeaderParams.put("{{baseName}}", apiClient.parameterToString({{paramName}}));
+      {{#isDeprecated}}
+      LOGGER.log(Level.WARNING, "{{{httpMethod}}} {{{path}}} received a deprecated parameter: {{paramName}}");
+      {{/isDeprecated}}
+    }
     {{#-last}}
 
     {{/-last}}
@@ -168,9 +185,12 @@ public class {{classname}} {
     // Cookie parameters
     Map<String, String> localVarCookieParams = new LinkedHashMap<>();
     {{/-first}}
-    {{^required}}if ({{paramName}} != null) {
-      {{/required}}localVarCookieParams.put("{{baseName}}", apiClient.parameterToString({{paramName}}));{{^required}}
-    }{{/required}}
+    if ({{paramName}} != null) {
+      localVarCookieParams.put("{{baseName}}", apiClient.parameterToString({{paramName}}));
+      {{#isDeprecated}}
+      LOGGER.log(Level.WARNING, "{{{httpMethod}}} {{{path}}} received a deprecated parameter: {{paramName}}");
+      {{/isDeprecated}}
+    }
     {{#-last}}
 
     {{/-last}}
@@ -216,7 +236,7 @@ public class {{classname}} {
 
     /**
      * Set {{paramName}}
-     * @param {{paramName}} {{description}} ({{^required}}optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}{{/required}}{{#required}}required{{/required}})
+     * @param {{paramName}} {{description}} ({{^required}}optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}{{/required}}{{#required}}required{{/required}}){{#isDeprecated}} (deprecated){{/isDeprecated}}
      * @return API{{operationId}}Request
      */
     public API{{operationId}}Request {{paramName}}({{{dataType}}} {{paramName}}) {
@@ -273,7 +293,7 @@ public class {{classname}} {
   /**
    * {{summary}}
    * {{notes}}{{#pathParams}}
-   * @param {{paramName}} {{description}} (required){{/pathParams}}
+   * @param {{paramName}} {{description}} (required){{#isDeprecated}} (deprecated){{/isDeprecated}}{{/pathParams}}
    * @return {{operationId}}Request
    * @throws ApiException if fails to make API call
    {{#isDeprecated}}* @deprecated{{/isDeprecated}}

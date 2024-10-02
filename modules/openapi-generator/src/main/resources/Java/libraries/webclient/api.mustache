@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 {{#useBeanValidation}}
 import {{javaxPackage}}.validation.constraints.*;
@@ -34,6 +36,7 @@ import reactor.core.publisher.Flux;
 {{>generatedAnnotation}}
 {{#operations}}
 public class {{classname}} {
+    private static final Logger LOGGER = Logger.getLogger({{classname}}.class.getName());
     private ApiClient apiClient;
 
     public {{classname}}() {
@@ -58,7 +61,7 @@ public class {{classname}} {
      * {{summary}}
      * {{notes}}
 {{#responses}}     * <p><b>{{code}}</b>{{#message}} - {{.}}{{/message}}
-{{/responses}}{{#allParams}}     * @param {{paramName}} {{description}}{{^description}}The {{paramName}} parameter{{/description}}
+{{/responses}}{{#allParams}}     * @param {{paramName}} {{description}}{{^description}}The {{paramName}} parameter{{/description}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
 {{/allParams}}{{#returnType}}     * @return {{.}}
 {{/returnType}}     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
 {{#externalDocs}}
@@ -89,6 +92,11 @@ public class {{classname}} {
         {{#pathParams}}
         pathParams.put("{{baseName}}", {{#collectionFormat}}apiClient.collectionPathParameterToString(ApiClient.CollectionFormat.valueOf("csv".toUpperCase()), {{/collectionFormat}}{{{paramName}}}{{#collectionFormat}}){{/collectionFormat}});
         {{/pathParams}}
+        {{#pathParams}}
+        {{#isDeprecated}}
+        LOGGER.log(Level.WARNING, "{{{httpMethod}}} {{{path}}} received a deprecated parameter: {{paramName}}");
+        {{/isDeprecated}}
+        {{/pathParams}}
         {{/hasPathParams}}
 
         final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
@@ -100,18 +108,33 @@ public class {{classname}} {
         {{#queryParams}}{{#isExplode}}{{#hasVars}}{{#vars}}queryParams.putAll(apiClient.parameterToMultiValueMap({{#collectionFormat}}ApiClient.CollectionFormat.valueOf("{{{.}}}".toUpperCase(Locale.ROOT)){{/collectionFormat}}{{^collectionFormat}}null{{/collectionFormat}}, "{{baseName}}", {{paramName}}.{{getter}}()));
         {{/vars}}{{/hasVars}}{{^hasVars}}queryParams.putAll(apiClient.parameterToMultiValueMap({{#collectionFormat}}ApiClient.CollectionFormat.valueOf("{{{.}}}".toUpperCase(Locale.ROOT)){{/collectionFormat}}{{^collectionFormat}}null{{/collectionFormat}}, "{{baseName}}", {{paramName}}));
         {{/hasVars}}{{/isExplode}}{{^isExplode}}queryParams.putAll(apiClient.parameterToMultiValueMap({{#collectionFormat}}ApiClient.CollectionFormat.valueOf("{{{.}}}".toUpperCase(Locale.ROOT)){{/collectionFormat}}{{^collectionFormat}}null{{/collectionFormat}}, "{{baseName}}", {{paramName}}));
-        {{/isExplode}}{{/queryParams}}{{/hasQueryParams}}{{#hasHeaderParams}}
+        {{/isExplode}}
+        {{#isDeprecated}}
+        if ({{paramName}} != null) {
+            LOGGER.log(Level.WARNING, "{{{httpMethod}}} {{{path}}} received a deprecated parameter: {{paramName}}");
+        }
+        {{/isDeprecated}}
+        {{/queryParams}}{{/hasQueryParams}}{{#hasHeaderParams}}
 
         {{#headerParams}}
-        if ({{paramName}} != null)
-        headerParams.add("{{baseName}}", apiClient.parameterToString({{paramName}}));{{^-last}}
-        {{/-last}}
+        if ({{paramName}} != null) {
+            headerParams.add("{{baseName}}", apiClient.parameterToString({{paramName}}));{{^-last}}
+            {{/-last}}
+            {{#isDeprecated}}
+            LOGGER.log(Level.WARNING, "{{{httpMethod}}} {{{path}}} received a deprecated parameter: {{paramName}}");
+            {{/isDeprecated}}
+        }
         {{/headerParams}}
         {{/hasHeaderParams}}
         {{#hasCookieParams}}
 
         {{#cookieParams}}
         cookieParams.putAll(apiClient.parameterToMultiValueMap({{#collectionFormat}}ApiClient.CollectionFormat.valueOf("{{{.}}}".toUpperCase(Locale.ROOT)){{/collectionFormat}}{{^collectionFormat}}null{{/collectionFormat}}, "{{baseName}}", {{paramName}}));
+        {{#isDeprecated}}
+        if ({{paramName}} != null) {
+            LOGGER.log(Level.WARNING, "{{{httpMethod}}} {{{path}}} received a deprecated parameter: {{paramName}}");
+        }
+        {{/isDeprecated}}
         {{/cookieParams}}
         {{/hasCookieParams}}
         {{#hasFormParams}}
@@ -141,7 +164,7 @@ public class {{classname}} {
      * {{summary}}
      * {{notes}}
 {{#responses}}     * <p><b>{{code}}</b>{{#message}} - {{.}}{{/message}}
-{{/responses}}{{#allParams}}     * @param {{paramName}} {{description}}{{^description}}The {{paramName}} parameter{{/description}}
+{{/responses}}{{#allParams}}     * @param {{paramName}} {{description}}{{^description}}The {{paramName}} parameter{{/description}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
 {{/allParams}}{{#returnType}}     * @return {{.}}
 {{/returnType}}     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
 {{#externalDocs}}
@@ -158,7 +181,7 @@ public class {{classname}} {
      * {{summary}}
      * {{notes}}
 {{#responses}}     * <p><b>{{code}}</b>{{#message}} - {{.}}{{/message}}
-{{/responses}}{{#allParams}}     * @param {{paramName}} {{description}}{{^description}}The {{paramName}} parameter{{/description}}
+{{/responses}}{{#allParams}}     * @param {{paramName}} {{description}}{{^description}}The {{paramName}} parameter{{/description}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
 {{/allParams}}{{#returnType}}     * @return ResponseEntity&lt;{{.}}&gt;
 {{/returnType}}     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
 {{#externalDocs}}
@@ -175,7 +198,7 @@ public class {{classname}} {
      * {{summary}}
      * {{notes}}
 {{#responses}}     * <p><b>{{code}}</b>{{#message}} - {{.}}{{/message}}
-{{/responses}}{{#allParams}}     * @param {{paramName}} {{description}}{{^description}}The {{paramName}} parameter{{/description}}
+{{/responses}}{{#allParams}}     * @param {{paramName}} {{description}}{{^description}}The {{paramName}} parameter{{/description}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
 {{/allParams}}
      * @return ResponseSpec
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API

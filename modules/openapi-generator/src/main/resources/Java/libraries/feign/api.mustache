@@ -29,7 +29,7 @@ public interface {{classname}} extends ApiClient.Api {
    * {{summary}}
    * {{notes}}
 {{#allParams}}
-   * @param {{paramName}} {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}){{/required}}
+   * @param {{paramName}} {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}){{/required}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
 {{/allParams}}
 {{#returnType}}
    * @return {{.}}
@@ -59,7 +59,7 @@ public interface {{classname}} extends ApiClient.Api {
    * Similar to <code>{{operationId}}</code> but it also returns the http response headers .
    * {{notes}}
 {{#allParams}}
-   * @param {{paramName}} {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}){{/required}}
+   * @param {{paramName}} {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}){{/required}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
 {{/allParams}}
 {{#returnType}}
    * @return A ApiResponse that wraps the response boyd and the http headers.
@@ -96,14 +96,14 @@ public interface {{classname}} extends ApiClient.Api {
    * building up this map in a fluent style.
       {{#allParams}}
         {{^isQueryParam}}
-   * @param {{paramName}} {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}){{/required}}
+   * @param {{paramName}} {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}){{/required}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
         {{/isQueryParam}}
       {{/allParams}}
    * @param queryParams Map of query parameters as name-value pairs
    *   <p>The following elements may be specified in the query map:</p>
    *   <ul>
       {{#queryParams}}
-   *   <li>{{paramName}} - {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}){{/required}}</li>
+   *   <li>{{paramName}} - {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}){{/required}}{{#isDeprecated}} (deprecated){{/isDeprecated}}</li>
       {{/queryParams}}
    *   </ul>
       {{#returnType}}
@@ -136,14 +136,14 @@ public interface {{classname}} extends ApiClient.Api {
   * but this one also exposes the Http response headers
   {{#allParams}}
       {{^isQueryParam}}
-              * @param {{paramName}} {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}){{/required}}
+              * @param {{paramName}} {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}){{/required}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
       {{/isQueryParam}}
   {{/allParams}}
       * @param queryParams Map of query parameters as name-value pairs
       *   <p>The following elements may be specified in the query map:</p>
       *   <ul>
       {{#queryParams}}
-          *   <li>{{paramName}} - {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}){{/required}}</li>
+          *   <li>{{paramName}} - {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}){{/required}}{{#isDeprecated}} (deprecated){{/isDeprecated}}</li>
       {{/queryParams}}
       *   </ul>
   {{#returnType}}

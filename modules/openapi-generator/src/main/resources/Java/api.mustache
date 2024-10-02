@@ -17,10 +17,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 {{>generatedAnnotation}}
 {{#operations}}
 public class {{classname}} {
+  private static final Logger LOGGER = Logger.getLogger({{classname}}.class.getName());
   private ApiClient apiClient;
 
   public {{classname}}() {
@@ -44,7 +47,7 @@ public class {{classname}} {
    * {{summary}}
    * {{notes}}
    {{#allParams}}
-   * @param {{paramName}} {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}){{/required}}
+   * @param {{paramName}} {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}){{/required}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
    {{/allParams}}
    {{#returnType}}
    * @return {{.}}
@@ -80,16 +83,35 @@ public class {{classname}} {
     Map<String, String> localVarCookieParams = new HashMap<String, String>();
     Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
+    {{#pathParams}}
+    {{#isDeprecated}}
+    LOGGER.log(Level.WARNING, "{{{httpMethod}}} {{{path}}} received a deprecated parameter: {{paramName}}");
+    {{/isDeprecated}}
+    {{/pathParams}}
+
     {{#queryParams}}
     {{#collectionFormat}}localVarCollectionQueryParams.addAll(apiClient.parameterToPairs("{{{.}}}", {{/collectionFormat}}{{^collectionFormat}}localVarQueryParams.addAll(apiClient.parameterToPair({{/collectionFormat}}"{{baseName}}", {{paramName}}));
+    {{#isDeprecated}}
+    if ({{paramName}} != null) {
+      LOGGER.log(Level.WARNING, "{{{httpMethod}}} {{{path}}} received a deprecated parameter: {{paramName}}");
+    }   
+    {{/isDeprecated}}
     {{/queryParams}}
 
-    {{#headerParams}}if ({{paramName}} != null)
+    {{#headerParams}}if ({{paramName}} != null) {
       localVarHeaderParams.put("{{baseName}}", apiClient.parameterToString({{paramName}}));
+      {{#isDeprecated}}
+      LOGGER.log(Level.WARNING, "{{{httpMethod}}} {{{path}}} received a deprecated parameter: {{paramName}}");
+      {{/isDeprecated}}
+    }
     {{/headerParams}}
 
-    {{#cookieParams}}if ({{paramName}} != null)
+    {{#cookieParams}}if ({{paramName}} != null) {
       localVarCookieParams.put("{{baseName}}", apiClient.parameterToString({{paramName}}));
+      {{#isDeprecated}}
+      LOGGER.log(Level.WARNING, "{{{httpMethod}}} {{{path}}} received a deprecated parameter: {{paramName}}");
+      {{/isDeprecated}}
+    }
     {{/cookieParams}}
 
     {{#formParams}}if ({{paramName}} != null)

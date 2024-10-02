@@ -47,6 +47,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 {{#asyncNative}}
 
 import java.util.concurrent.CompletableFuture;
@@ -55,6 +57,7 @@ import java.util.concurrent.CompletableFuture;
 {{>generatedAnnotation}}
 {{#operations}}
 public class {{classname}} {
+  private static final Logger LOGGER = Logger.getLogger({{classname}}.class.getName());
   private final HttpClient memberVarHttpClient;
   private final ObjectMapper memberVarObjectMapper;
   private final String memberVarBaseUri;
@@ -163,7 +166,7 @@ public class {{classname}} {
    * {{summary}}
    * {{notes}}
    {{#allParams}}
-   * @param {{paramName}} {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}){{/required}}
+   * @param {{paramName}} {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}){{/required}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
    {{/allParams}}
    {{#returnType}}
    * @return {{#asyncNative}}CompletableFuture&lt;{{/asyncNative}}{{returnType}}{{#asyncNative}}&gt;{{/asyncNative}}
@@ -226,7 +229,7 @@ public class {{classname}} {
    * {{summary}}
    * {{notes}}
    {{#allParams}}
-   * @param {{paramName}} {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}){{/required}}
+   * @param {{paramName}} {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{^isContainer}}{{#defaultValue}}, default to {{.}}{{/defaultValue}}{{/isContainer}}){{/required}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
    {{/allParams}}
    * @return {{#asyncNative}}CompletableFuture&lt;{{/asyncNative}}ApiResponse&lt;{{returnType}}{{^returnType}}Void{{/returnType}}&gt;{{#asyncNative}}&gt;{{/asyncNative}}
    * @throws ApiException if fails to make API call
@@ -358,6 +361,13 @@ public class {{classname}} {
     List<Pair> localVarQueryParams = new ArrayList<>();
     StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     String localVarQueryParameterBaseName;
+
+    {{#pathParams}}
+    {{#isDeprecated}}
+    LOGGER.log(Level.WARNING, "{{{httpMethod}}} {{{path}}} received a deprecated parameter: {{paramName}}");
+    {{/isDeprecated}}
+    {{/pathParams}}
+
     {{#queryParams}}
     localVarQueryParameterBaseName = "{{{baseName}}}";
       {{#collectionFormat}}
@@ -377,6 +387,9 @@ public class {{classname}} {
         localVarQueryStringJoiner.add(queryString);
       }
             {{/isArray}}
+      {{#isDeprecated}}
+      LOGGER.log(Level.WARNING, "{{{httpMethod}}} {{{path}}} received a deprecated parameter: {{paramName}}");
+      {{/isDeprecated}}
     }
         {{/isDeepObject}}
         {{^isDeepObject}}
@@ -425,6 +438,9 @@ public class {{classname}} {
     {{#headerParams}}
     if ({{paramName}} != null) {
       localVarRequestBuilder.header("{{baseName}}", {{paramName}}.toString());
+      {{#isDeprecated}}
+      LOGGER.log(Level.WARNING, "{{{httpMethod}}} {{{path}}} received a deprecated parameter: {{paramName}}");
+      {{/isDeprecated}}
     }
     {{/headerParams}}
     {{#bodyParam}}
