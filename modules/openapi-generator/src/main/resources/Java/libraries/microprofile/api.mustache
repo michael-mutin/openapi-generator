@@ -56,7 +56,7 @@ public interface {{classname}}  {
      *
      {{/notes}}
      {{#isDeprecated}}
-     * @deprecated
+     * @deprecated {{#vendorExtensions.x-alternative-operation-id}}Use {@link #{{vendorExtensions.x-alternative-operation-id}}} instead{{/vendorExtensions.x-alternative-operation-id}}
      {{/isDeprecated}}
      */
     {{/summary}}

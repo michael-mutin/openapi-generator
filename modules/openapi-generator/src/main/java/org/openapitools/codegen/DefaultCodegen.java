@@ -4466,6 +4466,67 @@ public class DefaultCodegen implements CodegenConfig {
             op.isDeprecated = operation.getDeprecated();
         }
 
+        final String altOpFieldName = "x-alternative-operation";
+        Object altOpObj = null;;
+        if (operation.getExtensions() != null) {
+            altOpObj = operation.getExtensions().get(altOpFieldName);
+        }
+        if (altOpObj != null && altOpObj instanceof String) {
+            String alternativeOperation = (String) altOpObj;
+            // Format: #/paths/{path}/{operation}
+            String operationRefRegex = "#/paths(/.*)/(get|put|post|delete|options|head|patch|trace)";
+            Pattern operationRefPattern = Pattern.compile(operationRefRegex);
+            Matcher operationRefMatcher = operationRefPattern.matcher(alternativeOperation);
+            if (operationRefMatcher.matches()) {
+                String altOpPathname = operationRefMatcher.group(1);
+                String altOpHttpMethod = operationRefMatcher.group(2);
+                PathItem altOpPathItem = openAPI.getPaths().get(altOpPathname);
+                if (altOpPathItem != null) {
+                    Operation altOpOperation;
+                    switch (altOpHttpMethod) {
+                        case "get":
+                            altOpOperation = altOpPathItem.getGet();
+                            break;
+                        case "put":
+                            altOpOperation = altOpPathItem.getPut();
+                            break;
+                        case "post":
+                            altOpOperation = altOpPathItem.getPost();
+                            break;
+                        case "delete":
+                            altOpOperation = altOpPathItem.getDelete();
+                            break;
+                        case "options":
+                            altOpOperation = altOpPathItem.getOptions();
+                            break;
+                        case "head":
+                            altOpOperation = altOpPathItem.getHead();
+                            break;
+                        case "patch":
+                            altOpOperation = altOpPathItem.getPatch();
+                            break;
+                        default:
+                            altOpOperation = null;
+                            break;
+                    }
+                    if (altOpOperation != null) {
+                        String altOpId = getOrGenerateOperationId(altOpOperation, altOpPathname, altOpHttpMethod);
+                        // remove prefix in operationId
+                        if (removeOperationIdPrefix) {
+                            int offset = altOpId.indexOf('_');
+                            if (offset > -1) {
+                                altOpId = altOpId.substring(offset + 1);
+                            }
+                        }
+                        altOpId = removeNonNameElementToCamelCase(altOpId);
+                        altOpId = toOperationId(altOpId);
+                        final String altOpIdFieldName = "x-alternative-operation-id";
+                        op.vendorExtensions.put(altOpIdFieldName, altOpId);
+                    }
+                }
+            }
+        }
+
         addConsumesInfo(operation, op);
 
         if (operation.getResponses() != null && !operation.getResponses().isEmpty()) {
